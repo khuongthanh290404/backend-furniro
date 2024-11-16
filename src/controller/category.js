@@ -2,8 +2,12 @@ const Category = require("../model/category");
 
 module.exports = {
   getAllCategory: async (req, res) => {
-    const data = await Category.find();
-    res.status(200).json(data);
+    try {
+      const data = await Category.find();
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ success: false });
+    }
   },
   getCategoryById: async (req, res) => {
     try {
@@ -22,22 +26,34 @@ module.exports = {
     }
   },
   createCategory: async (req, res) => {
-    const data = await Category(req.body).save();
-    if (!data || data.length === 0) {
-      return res.status(404).json({ message: "category sussess" });
+    try {
+      const data = await Category(req.body).save();
+      if (!data || data.length === 0) {
+        return res.status(404).json({ message: "category sussess" });
+      }
+      return res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ success: false });
     }
-    return res.status(200).json(data);
   },
   updateCategory: async (req, res) => {
-    const data = await Category.findOneAndUpdate(
-      { _id: req.params.id },
-      req.body,
-      { new: true }
-    );
-    res.status(200).json(data);
+    try {
+      const data = await Category.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        { new: true }
+      );
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ success: false });
+    }
   },
   deleteCategory: async (req, res) => {
-    const data = await Category.findOneAndDelete({ _id: req.params.id });
-    res.status(200).json(data);
+    try {
+      const data = await Category.findOneAndDelete({ _id: req.params.id });
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ success: false });
+    }
   },
 };

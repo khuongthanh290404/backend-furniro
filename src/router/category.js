@@ -6,11 +6,12 @@ const {
   updateCategory,
   deleteCategory,
 } = require("../controller/category");
+const { checkAuth } = require("../middlewares/checkout");
 const router = express.Router();
-router.get("/category", getAllCategory);
-router.get("/category/:id", getCategoryById);
-router.post("/category", createCategory);
-router.put("/category/:id", updateCategory);
-router.delete("/category/:id", deleteCategory);
+router.get("/category", checkAuth, getAllCategory);
+router.get("/category/:id", checkAuth, getCategoryById);
+router.post("/category", checkAuth, createCategory);
+router.put("/category/:id", checkAuth, updateCategory);
+router.delete("/category/:id", checkAuth, deleteCategory);
 
 module.exports = router;

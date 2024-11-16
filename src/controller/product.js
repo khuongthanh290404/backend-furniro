@@ -3,8 +3,12 @@ const Category = require("../model/category");
 const mongoose = require("mongoose");
 module.exports = {
   getAllProduct: async (req, res) => {
-    const data = await Product.find();
-    res.status(200).json(data);
+    try {
+      const data = await Product.find();
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ success: false });
+    }
   },
   getProductById: async (req, res) => {
     const { id } = req.params;
@@ -56,26 +60,34 @@ module.exports = {
   },
 
   updateProduct: async (req, res) => {
-    const { name, price, description, image } = req.body;
-    const data = await Product.findOneAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      req.body,
-      {
-        new: true,
-      },
-      {
-        name,
-        price,
-        description,
-        image,
-      }
-    );
-    res.status(200).json(data);
+    try {
+      const { name, price, description, image } = req.body;
+      const data = await Product.findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        req.body,
+        {
+          new: true,
+        },
+        {
+          name,
+          price,
+          description,
+          image,
+        }
+      );
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ success: false });
+    }
   },
   deleteProduct: async (req, res) => {
-    const data = await Product.findOneAndDelete({ _id: req.params.id });
-    res.status(200).json(data);
+    try {
+      const data = await Product.findOneAndDelete({ _id: req.params.id });
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ success: false });
+    }
   },
 };
